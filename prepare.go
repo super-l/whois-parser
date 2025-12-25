@@ -186,9 +186,15 @@ func prepareEDU(text string) string {
 						index = found
 					}
 				}
-				result += fmt.Sprintf("\n%s %s: %s", token[:len(token)-1], tokens[token][index], v)
-				if tokens[token][index] != "Address" {
-					index++
+
+				// 检查索引是否有效
+				if index < len(tokens[token]) {
+					result += fmt.Sprintf("\n%s %s: %s", token[:len(token)-1], tokens[token][index], v)
+					if tokens[token][index] != "Address" {
+						index++
+					}
+				} else {
+
 				}
 			}
 		}
@@ -929,8 +935,14 @@ func prepareNL(text string) string {
 			if token == "" {
 				result += "\n" + v
 			} else {
-				result += fmt.Sprintf("\n%s %s: %s", token[:len(token)-1], tokens[token][index], v)
-				index++
+				// 检查索引是否有效
+				if index < len(tokens[token]) {
+					result += fmt.Sprintf("\n%s %s: %s", token[:len(token)-1], tokens[token][index], v)
+					index++
+				} else {
+					// 如果索引超出范围，回退到普通处理
+					result += "\n" + v
+				}
 			}
 		}
 	}
